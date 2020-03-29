@@ -26,8 +26,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.neo4j.unsafe.batchinsert.BatchInserter;
-import org.neo4j.unsafe.batchinsert.BatchInserters;
+import org.neo4j.batchinsert.BatchInserter;
+import org.neo4j.batchinsert.BatchInserters;
+import org.neo4j.io.layout.DatabaseLayout;
 
 public class ImportGraph {
 
@@ -35,7 +36,8 @@ public class ImportGraph {
     private final Map<String, Long> inMemoryIndex;
 
     public ImportGraph(String dataDir) throws IOException {
-        inserter = BatchInserters.inserter(new File(dataDir));
+        DatabaseLayout dbLayout = DatabaseLayout.ofFlat(new File(dataDir));
+        inserter = BatchInserters.inserter(dbLayout);
         inMemoryIndex = new HashMap<String, Long>();
     }
 
