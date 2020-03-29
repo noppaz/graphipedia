@@ -1,6 +1,8 @@
 target
 .classpath
+.factorypath
 .idea
 .project
 .settings
 *.iml
+dependency-reduced-pom.xml
