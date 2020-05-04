@@ -38,15 +38,14 @@ Assuming you downloaded `pages-articles-multistream.xml.bz2`, follow these steps
 These two steps are bundled in [import.sh](import.sh) for convenience.
 
 Just to give an idea of runtime, enwiki-20200201-pages-articles-multistream.xml.bz2 is 16.6G and
-contains almost 15M pages, resulting in over 160M links to be extracted. On a 2019 Macbook Pro laptop _with an SSD drive_ the import takes about 35 minutes to decompress/ExtractLinks (pretty much the same time
-as decompressing only) and an additional 2 hours to ImportGraph.
+contains almost 15M pages, resulting in over 160M links to be extracted. On a 2019 Macbook Pro laptop _with an SSD drive_ the import takes about 35 minutes to decompress/ExtractLinks (pretty much the same time as decompressing only) and an additional 2 hours to ImportGraph.
 
 (Note that disk I/O is the critical factor here: the same import will easily take several hours with an old 5400RPM drive.)
 
 Using Docker
 ------------
 
-A Dockerfile for running build and import in Docker is provided to enable running without bzip2, java and maven. Note that Docker on Mac doesn't perform as well as on Linux-based systems therefore importing with Docker on Mac will be very slow.
+A Dockerfile for running build and import in Docker is provided to enable running without bzip2, java and maven. Note that Docker on Mac doesn't perform as well as on Linux systems, importing with Docker on Mac will be very slow.
 
 Regardless of import method, you can run Neo4j as a container on your imported database. Sample run command:
 
@@ -66,7 +65,7 @@ Show all pages linking to a given starting page - e.g. "Neo4j":
     MATCH (p:Page) -[Link]-> (p0:Page {title:'Neo4j'})
     RETURN p0, p
 
-Find the shortest path between two pages - e.g. "Neo4j" and "Kevin Bacon" - are connected:
+Find the shortest path between two pages - e.g. "Wikipedia" and "Neo4j" - are connected:
 
     MATCH path = shortestPath((p0:Page { title:'Wikipedia' })-[:Link*]->(p:Page { title:'Neo4j' }))
     RETURN path, length(path) AS steps
