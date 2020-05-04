@@ -59,16 +59,16 @@ Regardless of import method, you can run Neo4j as a container on your imported d
 Querying
 --------
 
-The [Neo4j browser](http://blog.neo4j.org/2013/10/neo4j-200-m06-introducing-neo4js-browser.html) can be used to query and visualise
-the imported graph. Here are some sample Cypher queries.
+The Neo4j browser ([localhost:7474](http://localhost:7474) with Docker) can be used to query and visualise the imported graph. Here are some sample Cypher queries.
 
-Show all pages linked to a given starting page - e.g. "Neo4j":
+Show all pages linking to a given starting page - e.g. "Neo4j":
 
-    MATCH (p0:Page {title:'Neo4j'}) -[Link]- (p:Page)
+    MATCH (p:Page) -[Link]-> (p0:Page {title:'Neo4j'})
     RETURN p0, p
 
-Find how two pages - e.g. "Neo4j" and "Kevin Bacon" - are connected:
+Find the shortest path between two pages - e.g. "Neo4j" and "Kevin Bacon" - are connected:
 
-    MATCH (p0:Page {title:'Neo4j'}), (p1:Page {title:'Kevin Bacon'}),
-      p = shortestPath((p0)-[*..6]-(p1))
-    RETURN p
+    MATCH path = shortestPath((p0:Page { title:'Wikipedia' })-[:Link*]->(p:Page { title:'Neo4j' }))
+    RETURN path, length(path) AS steps
+
+If you're not going to do cool research on Wikipedia pages you can now use the database to get solutions or verify solutions for many [Wiki Game](https://en.wikipedia.org/wiki/Wikipedia:Wiki_Game) variations.
