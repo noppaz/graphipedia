@@ -1,6 +1,6 @@
 FROM maven:3.6.3-jdk-11-slim
 
-ADD . .
+COPY . .
 
 RUN apt-get update
 RUN apt-get install -y bzip2
