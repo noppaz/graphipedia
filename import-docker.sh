@@ -9,14 +9,17 @@ else
     OUTPUT_DIR=$2
 fi
 
-echo "Build complete, starting import"
+docker run --rm \
+    -v $INPUT_FILE:/input-file.xml.bz2:cached \
+    -v $OUTPUT_DIR:/output-data:delegated \
+    graphipedia
 
-docker run --rm --volume=$INPUT_FILE:/input-file.xml.bz2 --volume=$OUTPUT_DIR:/output-data graphipedia
-
-docker run --name neo4j \
---publish=7474:7474 --publish=7687:7687 \
---volume=$OUTPUT_DIR/neo4jdb:/data \
---env=NEO4J_AUTH=none \
--d neo4j:4.0.2
+docker run --rm \
+    --name neo4j \
+    -p 7474:7474 \
+    -p 7687:7687 \
+    -v $OUTPUT_DIR/neo4jdb:/data:delegated \
+    -e NEO4J_AUTH=none \
+    -d neo4j:4.0.2
 
 echo "Neo4j starting up, soon available at http://localhost:7474/"
