@@ -45,14 +45,16 @@ contains almost 15M pages, resulting in over 160M links to be extracted. On a 20
 Using Docker
 ------------
 
-A Dockerfile for running build and import in Docker is provided to enable running without bzip2, java and maven. Note that Docker on Mac doesn't perform as well as on Linux systems, importing with Docker on Mac will be very slow.
+A Dockerfile for running build and import in Docker is provided to enable running without bzip2, java and maven.
+
+Build an image with `docker build -t graphipedia .`
 
 Regardless of import method, you can run Neo4j as a container on your imported database. Sample run command:
 
     docker run --name neo4j \
-    --publish=7474:7474 --publish=7687:7687 \
-    --volume=neo4jdb:/data \
-    --env=NEO4J_AUTH=none \
+    -p 7474:7474 -p 7687:7687 \
+    -v neo4jdb:/data:delegated \
+    -e NEO4J_AUTH=none \
     -d neo4j:4.0.2
 
 Querying
