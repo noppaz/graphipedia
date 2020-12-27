@@ -12,11 +12,13 @@ else
     OUTPUT_DIR=$2
 fi
 
+mkdir $OUTPUT_DIR/intermediate
+
 bzip2 -dc $INPUT_FILE | java -classpath ./graphipedia-dataimport/target/graphipedia-dataimport.jar org.graphipedia.dataimport.ExtractLinks \
-    - $OUTPUT_DIR/enwiki-links.xml
+    - $OUTPUT_DIR/intermediate/enwiki-links.xml
 
 java -Xmx3G -classpath ./graphipedia-dataimport/target/graphipedia-dataimport.jar org.graphipedia.dataimport.neo4j.ImportGraph \
-    $OUTPUT_DIR/enwiki-links.xml $OUTPUT_DIR/neo4jdb/databases/neo4j
+    $OUTPUT_DIR/intermediate/enwiki-links.xml $OUTPUT_DIR/neo4jdb/databases/neo4j
 
 #This is ugly, but for some reason the new database cannot be read by Neo4j 4.0.2, recreating metadata store on startup fixes the problem
 rm -f $OUTPUT_DIR/neo4jdb/databases/neo4j/neostore
