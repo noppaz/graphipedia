@@ -1,0 +1,12 @@
+target
+.classpath
+.factorypath
+.idea
+.project
+.settings
+*.iml
+dependency-reduced-pom.xml
+
+Dockerfile
+import-docker.sh
+README.md
